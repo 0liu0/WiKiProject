@@ -11,6 +11,6 @@ public class TestController {
     private String hello;
     @RequestMapping("/hello")
     public String hello() {
-        return "Hello World!" + hello;
+        return "Hello World!" + hello + "你最帅了哦";
     }
 }
