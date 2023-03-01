@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liuche.wiki.mapper.EbookMapper">
+
+    <resultMap type="com.liuche.wiki.domain.Ebook" id="EbookMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="category1Id" column="category1_id" jdbcType="INTEGER"/>
+        <result property="category2Id" column="category2_id" jdbcType="INTEGER"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="cover" column="cover" jdbcType="VARCHAR"/>
+        <result property="docCount" column="doc_count" jdbcType="INTEGER"/>
+        <result property="viewCount" column="view_count" jdbcType="INTEGER"/>
+        <result property="voteCount" column="vote_count" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="EbookMap">
+        select id,
+               name,
+               category1_id,
+               category2_id,
+               description,
+               cover,
+               doc_count,
+               view_count,
+               vote_count
+        from ebook
+        where id = #{id}
+    </select>
+
+    <!--查找全部-->
+    <select id="selectAll" resultMap="EbookMap">
+        select id,
+               name,
+               category1_id,
+               category2_id,
+               description,
+               cover,
+               doc_count,
+               view_count,
+               vote_count
+        from ebook
+    </select>
+
+
+</mapper>
+
