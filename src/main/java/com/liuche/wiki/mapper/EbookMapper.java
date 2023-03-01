@@ -1,6 +1,7 @@
 package com.liuche.wiki.mapper;
 
 import com.liuche.wiki.domain.Ebook;
+import com.liuche.wiki.req.EbookReq;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public interface EbookMapper {
      */
     Ebook queryById(Long id);
 
-    List<Ebook> selectAll();
+    List<Ebook> selectAll(EbookReq req);
 
 }
 

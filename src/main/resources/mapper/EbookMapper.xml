@@ -40,7 +40,7 @@
                doc_count,
                view_count,
                vote_count
-        from ebook
+        from ebook where name like #{name}
     </select>
 
 
