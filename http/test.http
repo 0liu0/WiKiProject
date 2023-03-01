@@ -1,0 +1,4 @@
+GET http://localhost:8880/test/hello
+Accept: application/json
+
+###
