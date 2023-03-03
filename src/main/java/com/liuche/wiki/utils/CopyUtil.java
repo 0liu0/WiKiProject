@@ -25,7 +25,6 @@ public class CopyUtil {
         BeanUtils.copyProperties(source, obj);
         return obj;
     }
-
     /**
      * 列表复制
      */
