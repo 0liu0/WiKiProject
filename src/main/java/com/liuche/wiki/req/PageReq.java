@@ -6,16 +6,10 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
-public class EbookReq extends PageReq {
-    /**
-     * id
-     */
-    private Long id;
-    /**
-     * 名称
-     */
-    private String name;
+public class PageReq {
+    private int size;
+    private int page;
 }
