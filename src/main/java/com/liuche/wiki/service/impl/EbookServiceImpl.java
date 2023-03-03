@@ -32,13 +32,13 @@ public class EbookServiceImpl implements EbookService {
             req.setName(name);
             PageHelper.startPage(1,3);
             ebooks = ebookMapper.selectAll(req);
-            PageInfo<Ebook> p = new PageInfo<>();
+            PageInfo<Ebook> p = new PageInfo<>(ebooks);
             System.out.println(p.getPages());
             System.out.println(p.getTotal());
         }else {
             PageHelper.startPage(1,3);
             ebooks = ebookMapper.selectAll1();
-            PageInfo<Ebook> p = new PageInfo<>();
+            PageInfo<Ebook> p = new PageInfo<>(ebooks);
             System.out.println(p.getPages());
             System.out.println(p.getTotal());
         }
