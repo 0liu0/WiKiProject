@@ -22,6 +22,7 @@ public interface EbookMapper {
     Ebook queryById(Long id);
 
     List<Ebook> selectAll(EbookReq req);
+    List<Ebook> selectAll1();
 
 }
 

@@ -8,6 +8,7 @@ import com.liuche.wiki.service.EbookService;
 import com.liuche.wiki.utils.CopyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
@@ -22,18 +23,15 @@ public class EbookServiceImpl implements EbookService {
 
     @Override
     public List<EbookResp> selectAll(EbookReq req) {
+        List<Ebook> ebooks; // 返回的数据
         String name = req.getName();
-        name = "%" + name + "%";
-        req.setName(name);
-        List<Ebook> ebooks = ebookMapper.selectAll(req);
-
-//        ArrayList<EbookResp> ebookList = new ArrayList<>();
-//        for (Ebook ebook : ebooks){
-//            EbookResp ebookResp = new EbookResp();
-//            // 使用BeanUtils将两个类型相互转换
-//            BeanUtils.copyProperties(ebook,ebookResp);
-//            ebookList.add(ebookResp);
-//        }
+        if (!ObjectUtils.isEmpty(name)){
+            name = "%" + name + "%";
+            req.setName(name);
+            ebooks = ebookMapper.selectAll(req);
+        }else {
+            ebooks = ebookMapper.selectAll1();
+        }
         return CopyUtil.copyList(ebooks, EbookResp.class);
     }
 }
