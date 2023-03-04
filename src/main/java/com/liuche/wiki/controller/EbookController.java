@@ -30,10 +30,11 @@ public class EbookController {
         resp.setSuccess(b);
         return resp;
     }
-//    @PostMapping("/delete/{id}")
-//    public CommonResp delete(@PathVariable Long id){ // @RequestBody从前端接收JSON对象时要使用这个注解
-//        CommonResp<Object> resp = new CommonResp<>();
-//
-//        return resp;
-//    }
+    @DeleteMapping("/delete/{id}")
+    public CommonResp delete(@PathVariable Long id){ // @RequestBody从前端接收JSON对象时要使用这个注解
+        CommonResp<Object> resp = new CommonResp<>();
+        boolean b = ebookService.deleteEbook(id);
+        resp.setSuccess(b);
+        return resp;
+    }
 }

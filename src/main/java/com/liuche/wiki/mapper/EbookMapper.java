@@ -2,6 +2,7 @@ package com.liuche.wiki.mapper;
 
 import com.liuche.wiki.domain.Ebook;
 import com.liuche.wiki.req.EbookQueryReq;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -24,6 +25,8 @@ public interface EbookMapper {
     List<Ebook> selectAll(EbookQueryReq req);
     List<Ebook> selectAll1();
     void saveEBook(Ebook req);
+    void deleteEbook(@Param("id") Long id);
+    void saveEBook2(Ebook req);
 
 }
 

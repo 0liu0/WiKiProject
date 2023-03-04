@@ -11,4 +11,5 @@ public interface EbookService {
 
     PageResp<EbookQueryResp> selectAll(EbookQueryReq req);
     boolean saveEBook(EbookSaveReq req);
+    boolean deleteEbook(Long id);
 }

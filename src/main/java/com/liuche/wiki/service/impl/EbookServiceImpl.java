@@ -10,6 +10,7 @@ import com.liuche.wiki.resp.EbookQueryResp;
 import com.liuche.wiki.resp.PageResp;
 import com.liuche.wiki.service.EbookService;
 import com.liuche.wiki.utils.CopyUtil;
+import com.liuche.wiki.utils.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -20,10 +21,13 @@ import java.util.List;
 public class EbookServiceImpl implements EbookService {
     @Autowired
     private EbookMapper ebookMapper;
+    @Autowired
+    private SnowFlake snowFlake;
     @Override
     public Ebook queryById(Long id) {
         return ebookMapper.queryById(id);
     }
+
 
     @Override
     public PageResp<EbookQueryResp> selectAll(EbookQueryReq req) {
@@ -53,8 +57,19 @@ public class EbookServiceImpl implements EbookService {
             if (!ObjectUtils.isEmpty(ebook.getId())){
                 ebookMapper.saveEBook(ebook);
             }else { // 执行新增的逻辑
-
+                ebook.setId(snowFlake.nextId());
+                ebookMapper.saveEBook2(ebook);
             }
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deleteEbook(Long id) {
+        try {
+            ebookMapper.deleteEbook(id);
             return true;
         } catch (Exception e) {
             return false;

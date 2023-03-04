@@ -13,7 +13,6 @@
         <result property="viewCount" column="view_count" jdbcType="INTEGER"/>
         <result property="voteCount" column="vote_count" jdbcType="INTEGER"/>
     </resultMap>
-
     <!--查询单个-->
     <select id="queryById" resultMap="EbookMap">
         select id,
@@ -66,6 +65,27 @@
             cover       =#{cover}
         where id = #{id}
     </update>
+
+    <delete id="deleteEbook">
+        delete
+        from ebook
+        where id = #{id}
+    </delete>
+
+    <insert id="saveEBook2">
+        insert into ebook(id,
+                          name,
+                          category1_id,
+                          category2_id,
+                          description,
+                          cover)
+        values (#{id},
+                #{name},
+                #{category1Id},
+                #{category2Id},
+                #{description},
+                #{cover})
+    </insert>
 
 </mapper>
 
