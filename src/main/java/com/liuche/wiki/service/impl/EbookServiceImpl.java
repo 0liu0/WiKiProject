@@ -4,8 +4,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.liuche.wiki.domain.Ebook;
 import com.liuche.wiki.mapper.EbookMapper;
-import com.liuche.wiki.req.EbookReq;
-import com.liuche.wiki.resp.EbookResp;
+import com.liuche.wiki.req.EbookQueryReq;
+import com.liuche.wiki.req.EbookSaveReq;
+import com.liuche.wiki.resp.EbookQueryResp;
 import com.liuche.wiki.resp.PageResp;
 import com.liuche.wiki.service.EbookService;
 import com.liuche.wiki.utils.CopyUtil;
@@ -25,7 +26,7 @@ public class EbookServiceImpl implements EbookService {
     }
 
     @Override
-    public PageResp<EbookResp> selectAll(EbookReq req) {
+    public PageResp<EbookQueryResp> selectAll(EbookQueryReq req) {
         List<Ebook> ebooks; // 返回的数据
         String name = req.getName();
         if (!ObjectUtils.isEmpty(name)){
@@ -38,10 +39,25 @@ public class EbookServiceImpl implements EbookService {
             ebooks = ebookMapper.selectAll1();
         }
         PageInfo<Ebook> p = new PageInfo<>(ebooks); // 得到mysql中这些数据的信息
-        List<EbookResp> ebookResp = CopyUtil.copyList(ebooks, EbookResp.class); // 转化
-        PageResp<EbookResp> pageResp = new PageResp<>(); // 定义返回的信息
-        pageResp.setList(ebookResp); // 将ebooks装入pageResp中
+        List<EbookQueryResp> ebookQueryResp = CopyUtil.copyList(ebooks, EbookQueryResp.class); // 转化
+        PageResp<EbookQueryResp> pageResp = new PageResp<>(); // 定义返回的信息
+        pageResp.setList(ebookQueryResp); // 将ebooks装入pageResp中
         pageResp.setTotal(p.getTotal()); // 将数据库总量装入返回值中
         return pageResp;
+    }
+
+    @Override
+    public boolean saveEBook(EbookSaveReq req) {
+        try {
+            Ebook ebook = CopyUtil.copy(req, Ebook.class);
+            if (!ObjectUtils.isEmpty(ebook.getId())){
+                ebookMapper.saveEBook(ebook);
+            }else { // 执行新增的逻辑
+
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

@@ -9,7 +9,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class EbookReq extends PageReq {
+public class EbookQueryReq extends PageReq {
     /**
      * id
      */

@@ -1,13 +1,24 @@
-package com.liuche.wiki.resp;
+package com.liuche.wiki.req;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+import java.io.Serializable;
+
+/**
+ * 电子书(Ebook)实体类
+ *
+ * @author LiuChe
+ * @since 2023-03-01 17:40:02
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EbookResp {
+@ToString
+public class EbookSaveReq implements Serializable {
+    private static final long serialVersionUID = 760743672321450575L;
     /**
      * id
      */
@@ -44,4 +55,6 @@ public class EbookResp {
      * 点赞数
      */
     private Integer voteCount;
+
 }
+

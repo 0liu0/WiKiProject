@@ -57,6 +57,15 @@
         from ebook
     </select>
 
+    <update id="saveEBook">
+        update ebook
+        set name        = #{name},
+            category1_id=#{category1Id},
+            category2_id=#{category2Id},
+            description =#{description},
+            cover       =#{cover}
+        where id = #{id}
+    </update>
 
 </mapper>
 
