@@ -9,6 +9,8 @@ import com.liuche.wiki.service.EbookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RequestMapping("/ebook")
 @RestController
 public class EbookController {
@@ -16,7 +18,7 @@ public class EbookController {
     private EbookService ebookService;
 
     @GetMapping("/list")
-    public CommonResp list(EbookQueryReq req){
+    public CommonResp list(@Valid EbookQueryReq req){
         CommonResp<PageResp<EbookQueryResp>> resp = new CommonResp<>();
         PageResp<EbookQueryResp> ebookList = ebookService.selectAll(req); // 得到所有的ebook
 
@@ -24,7 +26,7 @@ public class EbookController {
         return resp;
     }
     @PostMapping("/save")
-    public CommonResp save(@RequestBody EbookSaveReq req){ // @RequestBody从前端接收JSON对象时要使用这个注解
+    public CommonResp save(@Valid @RequestBody EbookSaveReq req){ // @RequestBody从前端接收JSON对象时要使用这个注解
         CommonResp<Object> resp = new CommonResp<>();
         boolean b = ebookService.saveEBook(req);
         resp.setSuccess(b);

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -26,6 +27,7 @@ public class EbookSaveReq implements Serializable {
     /**
      * 名称
      */
+    @NotNull(message = "【名称】不能为空")
     private String name;
     /**
      * 分类1
