@@ -87,5 +87,22 @@
                 #{cover})
     </insert>
 
+    <select id="updateEbooks" resultMap="EbookMap">
+        select id,
+        name,
+        category1_id,
+        category2_id,
+        description,
+        cover,
+        doc_count,
+        view_count,
+        vote_count
+        from ebook
+        where category1_id = #{category1Id}
+        <if test="category2Id!=null">
+            and category2_id = #{category2Id}
+        </if>
+    </select>
+
 </mapper>
 

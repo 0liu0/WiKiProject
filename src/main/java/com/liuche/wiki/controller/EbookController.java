@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RequestMapping("/ebook")
 @RestController
@@ -37,6 +38,13 @@ public class EbookController {
         CommonResp<Object> resp = new CommonResp<>();
         boolean b = ebookService.deleteEbook(id);
         resp.setSuccess(b);
+        return resp;
+    }
+    @PostMapping("/update")
+    public CommonResp update(@RequestBody EbookQueryReq req) {
+        List<EbookQueryResp> ebookQueryResps = ebookService.updateEbooks(req);
+        CommonResp<Object> resp = new CommonResp<>();
+        resp.setContent(ebookQueryResps);
         return resp;
     }
 }

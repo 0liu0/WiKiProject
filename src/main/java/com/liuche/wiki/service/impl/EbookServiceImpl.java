@@ -75,4 +75,12 @@ public class EbookServiceImpl implements EbookService {
             return false;
         }
     }
+
+    @Override
+    public List<EbookQueryResp> updateEbooks(EbookQueryReq req) {
+        List<Ebook> ebooks = ebookMapper.updateEbooks(req);
+        List<EbookQueryResp> ebookQueryResps = CopyUtil.copyList(ebooks, EbookQueryResp.class);
+        System.out.println(req.getCategory2Id());
+        return ebookQueryResps;
+    }
 }

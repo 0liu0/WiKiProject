@@ -29,6 +29,7 @@ public interface EbookMapper {
     void saveEBook(Ebook req);
     void deleteEbook(@Param("id") Long id);
     void saveEBook2(Ebook req);
+    List<Ebook> updateEbooks(EbookQueryReq req);
 
 }
 
