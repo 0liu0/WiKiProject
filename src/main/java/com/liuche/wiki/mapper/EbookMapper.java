@@ -2,6 +2,7 @@ package com.liuche.wiki.mapper;
 
 import com.liuche.wiki.domain.Ebook;
 import com.liuche.wiki.req.EbookQueryReq;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
  * @author LiuChe
  * @since 2023-03-01 17:39:57
  */
+@Mapper
 public interface EbookMapper {
 
     /**

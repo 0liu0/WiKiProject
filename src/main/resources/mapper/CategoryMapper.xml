@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liuche.wiki.mapper.CategoryMapper">
+
+    <resultMap type="com.liuche.wiki.domain.Category" id="CategoryMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="parent" column="parent" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="sort" column="sort" jdbcType="INTEGER"/>
+    </resultMap>
+    <!--查询单个-->
+    <select id="queryById" resultMap="CategoryMap">
+        select id,
+               parent,
+               name,
+               sort
+        from category
+        where id = #{id}
+    </select>
+
+    <!--查找全部-->
+    <select id="selectAll" resultMap="CategoryMap">
+        select id,
+               parent,
+               name,
+               sort
+        from category
+        where name like #{name}
+    </select>
+
+    <select id="selectAll1" resultMap="CategoryMap">
+        select id,
+               parent,
+               name,
+               sort
+        from category ORDER BY sort
+    </select>
+
+    <update id="saveCategory">
+        update category
+        set name   = #{name},
+            parent = #{parent},
+            sort   = #{sort}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCategory">
+        delete
+        from category
+        where id = #{id}
+    </delete>
+
+    <insert id="saveCategory2">
+        insert into category(id,
+                             parent,
+                             name,
+                             sort)
+        values (#{id},
+                #{parent},
+                #{name},
+                #{sort})
+    </insert>
+
+</mapper>
+
