@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.validation.constraints.NotNull;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,14 +20,17 @@ public class DocSaveReq {
     /**
      * 电子书id
      */
+    @NotNull(message = "【电子书id】不能为空")
     private Long ebookId;
     /**
      * 父id
      */
+    @NotNull(message = "【父id】不能为空")
     private Long parent;
     /**
      * 名称
      */
+    @NotNull(message = "【名称】不能为空")
     private String name;
     /**
      * 顺序
