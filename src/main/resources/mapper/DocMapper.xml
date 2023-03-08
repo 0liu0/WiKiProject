@@ -63,7 +63,7 @@
     <delete id="deleteDoc">
         delete
         from doc
-        where id = #{id}
+        where id = #{id} or parent = #{id}
     </delete>
 
     <insert id="saveDoc2">
