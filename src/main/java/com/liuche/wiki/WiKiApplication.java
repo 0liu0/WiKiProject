@@ -1,4 +1,4 @@
-package com.liuche.wiki.config;
+package com.liuche.wiki;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 
-@ComponentScan({"com.liuche.wiki"})
 @MapperScan("com.liuche.wiki.mapper")
 @SpringBootApplication
 public class WiKiApplication {

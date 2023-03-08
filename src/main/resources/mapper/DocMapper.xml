@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liuche.wiki.mapper.DocMapper">
+
+    <resultMap type="com.liuche.wiki.domain.Doc" id="DocMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="ebookId" column="ebook_id" jdbcType="INTEGER"/>
+        <result property="parent" column="parent" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="sort" column="sort" jdbcType="INTEGER"/>
+        <result property="viewCount" column="view_count" jdbcType="INTEGER"/>
+        <result property="voteCount" column="vote_count" jdbcType="INTEGER"/>
+    </resultMap>
+    <!--查询单个-->
+    <select id="queryById" resultMap="DocMap">
+        select id,
+               ebook_id,
+               parent,
+               name,
+               sort,
+               view_count,
+               vote_count
+        from doc
+        where id = #{id}
+    </select>
+
+    <!--查找全部-->
+    <select id="selectAll" resultMap="DocMap">
+        select id,
+               ebook_id,
+               parent,
+               name,
+               sort,
+               view_count,
+               vote_count
+        from doc
+        where name like #{name}
+    </select>
+
+    <select id="selectAll1" resultMap="DocMap">
+        select id,
+               ebook_id,
+               parent,
+               name,
+               sort,
+               view_count,
+               vote_count
+        from doc
+        ORDER BY sort
+    </select>
+
+    <update id="saveDoc">
+        update doc
+        set name       = #{name},
+            parent     = #{parent},
+            sort       = #{sort},
+            ebook_id   = #{ebookId},
+            view_count = #{viewCount},
+            vote_count = #{voteCount}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDoc">
+        delete
+        from doc
+        where id = #{id}
+    </delete>
+
+    <insert id="saveDoc2">
+        insert into doc(id,
+                        ebook_id,
+                        parent,
+                        name,
+                        sort,
+                        view_count,
+                        vote_count)
+        values (#{id},
+                #{ebookId},
+                #{parent},
+                #{name},
+                #{sort},
+                #{viewCount},
+                #{voteCount})
+    </insert>
+
+</mapper>
+
