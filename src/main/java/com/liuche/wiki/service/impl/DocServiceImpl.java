@@ -3,7 +3,9 @@ package com.liuche.wiki.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.liuche.wiki.domain.Content;
 import com.liuche.wiki.domain.Doc;
+import com.liuche.wiki.mapper.ContentMapper;
 import com.liuche.wiki.mapper.DocMapper;
 import com.liuche.wiki.req.DocQueryReq;
 import com.liuche.wiki.req.DocSaveReq;
@@ -22,6 +24,8 @@ import java.util.List;
 public class DocServiceImpl implements DocService {
     @Autowired
     private DocMapper docMapper;
+    @Autowired
+    private ContentMapper contentMapper;
     @Autowired
     private SnowFlake snowFlake;
 
@@ -48,10 +52,17 @@ public class DocServiceImpl implements DocService {
     public boolean saveDoc(DocSaveReq req) {
         try {
             Doc doc = CopyUtil.copy(req, Doc.class);
+            Content content = CopyUtil.copy(req,Content.class);
             if (!ObjectUtils.isEmpty(doc.getId())) {
+                int flag = contentMapper.updateContent(content);
+                if (flag==0) {
+                    contentMapper.insertContent(content);
+                }
                 docMapper.saveDoc(doc);
             } else { // 执行新增的逻辑
                 doc.setId(snowFlake.nextId());
+                content.setId(doc.getId());
+                contentMapper.insertContent(content);
                 docMapper.saveDoc2(doc);
             }
             return true;
@@ -64,10 +75,17 @@ public class DocServiceImpl implements DocService {
     public boolean deleteDoc(Long id) {
         try {
             docMapper.deleteDoc(id);
+            int flag = contentMapper.deleteContent(id);
             return true;
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public String selectOne(Long id) {
+        Content content = contentMapper.selectOne(id);
+        return content.getContent();
     }
 
 }

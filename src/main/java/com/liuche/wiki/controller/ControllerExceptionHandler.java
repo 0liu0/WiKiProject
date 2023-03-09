@@ -30,4 +30,15 @@ public class ControllerExceptionHandler {
         commonResp.setMessage(e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
         return commonResp;
     }
+    // NullPointerException
+    @ExceptionHandler(value = NullPointerException.class)
+    @ResponseBody
+    public CommonResp NullPointerExceptionHandler(NullPointerException e) {
+        CommonResp commonResp = new CommonResp();
+        LOG.warn("参数校验失败：{}", e.getMessage());
+        commonResp.setSuccess(true);
+        commonResp.setMessage(e.getMessage());
+        commonResp.setContent("对不起后端爆出了空指针异常");
+        return commonResp;
+    }
 }

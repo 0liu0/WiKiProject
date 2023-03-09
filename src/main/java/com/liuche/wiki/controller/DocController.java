@@ -39,4 +39,16 @@ public class DocController {
         resp.setSuccess(b);
         return resp;
     }
+    @GetMapping("/get-content/{id}")
+    public CommonResp getContent(@PathVariable Long id){ // @RequestBody从前端接收JSON对象时要使用这个注解
+        CommonResp<Object> resp = new CommonResp<>();
+        String str = null;
+        try {
+            str = docService.selectOne(id);
+            resp.setContent(str);
+        } catch (NullPointerException e) {
+            resp.setContent("");
+        }
+        return resp;
+    }
 }

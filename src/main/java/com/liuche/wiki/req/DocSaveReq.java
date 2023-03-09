@@ -45,5 +45,7 @@ public class DocSaveReq {
      */
     private Integer voteCount;
 
+    private String content;
+
 
 }

@@ -11,4 +11,5 @@ public interface DocService {
     PageResp<DocQueryResp> selectAll(DocQueryReq req);
     boolean saveDoc(DocSaveReq req);
     boolean deleteDoc(Long id);
+    String selectOne(Long id);
 }
