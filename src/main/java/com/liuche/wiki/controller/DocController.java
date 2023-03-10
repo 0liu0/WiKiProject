@@ -1,5 +1,6 @@
 package com.liuche.wiki.controller;
 
+import com.liuche.wiki.domain.Doc;
 import com.liuche.wiki.req.DocQueryReq;
 import com.liuche.wiki.req.DocSaveReq;
 import com.liuche.wiki.resp.CommonResp;
@@ -52,11 +53,18 @@ public class DocController {
         return resp;
     }
 
-    @GetMapping("/get-one/{id}")
+    @GetMapping("/get-one/{id}") // 得到一个ebook的全部文档
     public CommonResp getOne(@PathVariable Long id) {
         CommonResp<PageResp<DocQueryResp>> resp = new CommonResp<>();
         PageResp<DocQueryResp> pageResp = docService.getOne(id);
         resp.setContent(pageResp);
+        return resp;
+    }
+    @GetMapping("/get-one-doc/{id}") // 查询一个文档的信息
+    public CommonResp getOneDoc(@PathVariable Long id) {
+        CommonResp<Doc> resp = new CommonResp<>();
+        Doc doc = docService.queryById(id);
+        resp.setContent(doc);
         return resp;
     }
 }
