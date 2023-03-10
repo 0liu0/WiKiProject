@@ -96,5 +96,12 @@
         where ebook_id = #{id}
     </select>
 
+    <update id="vote">
+        update doc
+        set vote_count=doc.vote_count + 1
+        where id = #{id}
+    </update>
+
+
 </mapper>
 

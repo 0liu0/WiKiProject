@@ -104,4 +104,9 @@ public class DocServiceImpl implements DocService {
         return pageResp;
     }
 
+    @Override
+    public int vote(Long id) {
+        return docMapper.vote(id);
+    }
+
 }
