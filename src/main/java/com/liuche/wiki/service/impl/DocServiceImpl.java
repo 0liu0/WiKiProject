@@ -52,17 +52,21 @@ public class DocServiceImpl implements DocService {
     public boolean saveDoc(DocSaveReq req) {
         try {
             Doc doc = CopyUtil.copy(req, Doc.class);
-            Content content = CopyUtil.copy(req,Content.class);
+            Content content = CopyUtil.copy(req, Content.class);
             if (!ObjectUtils.isEmpty(doc.getId())) {
-                int flag = contentMapper.updateContent(content);
-                if (flag==0) {
-                    contentMapper.insertContent(content);
+                if (!ObjectUtils.isEmpty(content.getContent())) { // 如果内容部分有内容我再保存，没有不保存
+                    int flag = contentMapper.updateContent(content);
+                    if (flag == 0) {
+                        contentMapper.insertContent(content);
+                    }
                 }
                 docMapper.saveDoc(doc);
             } else { // 执行新增的逻辑
                 doc.setId(snowFlake.nextId());
-                content.setId(doc.getId());
-                contentMapper.insertContent(content);
+                if (!ObjectUtils.isEmpty(content.getContent())) {// 如果内容部分有内容我再保存，没有不保存
+                    content.setId(doc.getId());
+                    contentMapper.insertContent(content);
+                }
                 docMapper.saveDoc2(doc);
             }
             return true;
@@ -86,6 +90,18 @@ public class DocServiceImpl implements DocService {
     public String selectOne(Long id) {
         Content content = contentMapper.selectOne(id);
         return content.getContent();
+    }
+
+    @Override
+    public PageResp<DocQueryResp> getOne(Long id) {
+        List<Doc> docs; // 返回的数据
+        docs = docMapper.getOne(id);
+        PageInfo<Doc> p = new PageInfo<>(docs); // 得到查询出来的信息的对象
+        List<DocQueryResp> docQueryResp = CopyUtil.copyList(docs, DocQueryResp.class); // 转化
+        PageResp<DocQueryResp> pageResp = new PageResp<>(); // 定义返回的信息
+        pageResp.setList(docQueryResp); // 将docs装入pageResp中
+        pageResp.setTotal(p.getTotal()); // 将数据库总量装入返回值中
+        return pageResp;
     }
 
 }

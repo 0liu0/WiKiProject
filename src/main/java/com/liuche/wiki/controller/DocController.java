@@ -2,8 +2,8 @@ package com.liuche.wiki.controller;
 
 import com.liuche.wiki.req.DocQueryReq;
 import com.liuche.wiki.req.DocSaveReq;
-import com.liuche.wiki.resp.DocQueryResp;
 import com.liuche.wiki.resp.CommonResp;
+import com.liuche.wiki.resp.DocQueryResp;
 import com.liuche.wiki.resp.PageResp;
 import com.liuche.wiki.service.DocService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +49,14 @@ public class DocController {
         } catch (NullPointerException e) {
             resp.setContent("");
         }
+        return resp;
+    }
+
+    @GetMapping("/get-one/{id}")
+    public CommonResp getOne(@PathVariable Long id) {
+        CommonResp<PageResp<DocQueryResp>> resp = new CommonResp<>();
+        PageResp<DocQueryResp> pageResp = docService.getOne(id);
+        resp.setContent(pageResp);
         return resp;
     }
 }

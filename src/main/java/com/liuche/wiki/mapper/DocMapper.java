@@ -19,5 +19,6 @@ public interface DocMapper {
     void saveDoc(Doc req);
     void deleteDoc(@Param("id") Long id);
     void saveDoc2(Doc req);
+    List<Doc> getOne(@Param("id") Long id); // 得到某一本电子书的所有文档
 }
 

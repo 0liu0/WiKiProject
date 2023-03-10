@@ -63,7 +63,8 @@
     <delete id="deleteDoc">
         delete
         from doc
-        where id = #{id} or parent = #{id}
+        where id = #{id}
+           or parent = #{id}
     </delete>
 
     <insert id="saveDoc2">
@@ -82,6 +83,18 @@
                 #{viewCount},
                 #{voteCount})
     </insert>
+
+    <select id="getOne" resultMap="DocMap">
+        select id,
+               ebook_id,
+               parent,
+               name,
+               sort,
+               view_count,
+               vote_count
+        from doc
+        where ebook_id = #{id}
+    </select>
 
 </mapper>
 
