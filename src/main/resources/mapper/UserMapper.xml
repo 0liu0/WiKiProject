@@ -9,9 +9,58 @@
         <result property="passWord" column="password" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <select id="selectAll" resultMap="UserMap">
-        select * from user
+    <!--查询单个-->
+    <select id="queryById" resultMap="UserMap">
+        select id,
+               login_name,
+               name,
+               password
+        from user
+        where id = #{id}
     </select>
+
+    <!--查找全部-->
+    <select id="selectAll" resultMap="UserMap">
+        select id,
+               login_name,
+               name,
+               password
+        from user
+        where name like #{name}
+    </select>
+
+    <select id="selectAll1" resultMap="UserMap">
+        select id,
+               login_name,
+               name,
+               password
+        from user
+    </select>
+
+    <update id="saveEBook">
+        update user
+        set login_name = #{loginName},
+            `name`     = #{name},
+            `password` = #{passWord}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUser">
+        delete
+        from user
+        where id = #{id}
+    </delete>
+
+    <insert id="saveEBook2">
+        insert into user(id,
+                         login_name,
+                         name,
+                         password)
+        values (#{id},
+                #{loginName},
+                #{name},
+                #{passWord})
+    </insert>
 
 
 </mapper>

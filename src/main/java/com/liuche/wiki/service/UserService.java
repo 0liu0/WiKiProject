@@ -1,9 +1,15 @@
 package com.liuche.wiki.service;
 
 import com.liuche.wiki.domain.User;
-
-import java.util.List;
+import com.liuche.wiki.req.UserQueryReq;
+import com.liuche.wiki.req.UserSaveReq;
+import com.liuche.wiki.resp.PageResp;
+import com.liuche.wiki.resp.UserQueryResp;
 
 public interface UserService {
-    List<User> selectAll();
+    User queryById(Long id);
+
+    PageResp<UserQueryResp> selectAll(UserQueryReq req);
+    boolean saveUser(UserSaveReq req);
+    boolean deleteUser(Long id);
 }
