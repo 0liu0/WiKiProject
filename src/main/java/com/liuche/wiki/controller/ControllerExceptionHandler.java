@@ -1,5 +1,6 @@
 package com.liuche.wiki.controller;
 
+import com.liuche.wiki.exception.BusinessException;
 import com.liuche.wiki.resp.CommonResp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +40,29 @@ public class ControllerExceptionHandler {
         commonResp.setSuccess(true);
         commonResp.setMessage(e.getMessage());
         commonResp.setContent("对不起后端爆出了空指针异常");
+        return commonResp;
+    }
+
+    // BusinessException
+    @ExceptionHandler(value = BusinessException.class)
+    @ResponseBody
+    public CommonResp BusinessExceptionHandler(BusinessException e) {
+        CommonResp commonResp = new CommonResp();
+        LOG.warn("业务异常：{}", e.getCode().getDesc());
+        commonResp.setSuccess(false);
+        commonResp.setMessage(e.getMessage());
+        commonResp.setContent(e.getCode().getDesc());
+        return commonResp;
+    }
+
+    // Exception
+    @ExceptionHandler(value = Exception.class)
+    @ResponseBody
+    public CommonResp ExceptionHandler(Exception e) {
+        CommonResp commonResp = new CommonResp();
+        LOG.error("系统异常：{}", e);
+        commonResp.setSuccess(false);
+        commonResp.setMessage("系统出现异常，请联系管理员");
         return commonResp;
     }
 }

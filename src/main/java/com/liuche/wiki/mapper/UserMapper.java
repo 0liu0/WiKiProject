@@ -20,4 +20,5 @@ public interface UserMapper {
     void saveUser(User req);
     void deleteUser(@Param("id") Long id);
     void saveUser2(User req);
+    User selectByLoginName(@Param("loginName") String loginName);
 }

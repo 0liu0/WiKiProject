@@ -3,6 +3,8 @@ package com.liuche.wiki.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.liuche.wiki.domain.User;
+import com.liuche.wiki.exception.BusinessException;
+import com.liuche.wiki.exception.BusinessExceptionCode;
 import com.liuche.wiki.mapper.UserMapper;
 import com.liuche.wiki.req.UserQueryReq;
 import com.liuche.wiki.req.UserSaveReq;
@@ -24,6 +26,7 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     @Autowired
     private SnowFlake snowFlake;
+
     @Override
     public User queryById(Long id) {
         return userMapper.queryById(id);
@@ -34,12 +37,15 @@ public class UserServiceImpl implements UserService {
     public PageResp<UserQueryResp> selectAll(UserQueryReq req) {
         List<User> users; // 返回的数据
         String name = req.getLoginName();
-        if (!ObjectUtils.isEmpty(name)){
+        if (!ObjectUtils.isEmpty(name)) {
             name = "%" + name + "%";
             req.setLoginName(name);
             PageHelper.startPage(req.getPage(), req.getSize()); // TODO 如果都没有的话就是不做分页
             users = userMapper.selectAll(req);
-        }else {
+            if (users == null) { // 如果为空（没有搜到）暂时返回全部，这是一个bug
+                users = userMapper.selectAll1();
+            }
+        } else {
             PageHelper.startPage(req.getPage(), req.getSize());
             users = userMapper.selectAll1();
         }
@@ -53,18 +59,25 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean saveUser(UserSaveReq req) {
-        try {
-            User user = CopyUtil.copy(req, User.class);
-            if (!ObjectUtils.isEmpty(user.getId())){
-                userMapper.saveUser(user);
-            }else { // 执行新增的逻辑
+        User user = CopyUtil.copy(req, User.class);
+        if (!ObjectUtils.isEmpty(user.getId())) { // 执行更新操作
+            userMapper.saveUser(user);
+
+        } else { // 执行新增的逻辑
+            User userDB = selectByLoginName(user.getLoginName());
+            if (ObjectUtils.isEmpty(userDB)) {
                 user.setId(snowFlake.nextId());
                 userMapper.saveUser2(user);
+            } else {
+                // 用户名已存在
+                throw new BusinessException(BusinessExceptionCode.USER_LOGIN_NAME_EXIST);
             }
-            return true;
-        } catch (Exception e) {
-            return false;
         }
+        return true;
+    }
+
+    public User selectByLoginName(String loginName) {
+        return userMapper.selectByLoginName(loginName);
     }
 
     @Override

@@ -6,7 +6,7 @@
         <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="loginName" column="login_name" jdbcType="VARCHAR"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
-        <result property="passWord" column="password" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--查询单个-->
@@ -26,7 +26,7 @@
                name,
                password
         from user
-        where name like #{name}
+        where login_name like #{loginName}
     </select>
 
     <select id="selectAll1" resultMap="UserMap">
@@ -37,11 +37,9 @@
         from user
     </select>
 
-    <update id="saveEBook">
+    <update id="saveUser">
         update user
-        set login_name = #{loginName},
-            `name`     = #{name},
-            `password` = #{passWord}
+        set `name` = #{name}
         where id = #{id}
     </update>
 
@@ -51,7 +49,7 @@
         where id = #{id}
     </delete>
 
-    <insert id="saveEBook2">
+    <insert id="saveUser2">
         insert into user(id,
                          login_name,
                          name,
@@ -59,8 +57,17 @@
         values (#{id},
                 #{loginName},
                 #{name},
-                #{passWord})
+                #{password})
     </insert>
+
+    <select id="selectByLoginName" resultMap="UserMap">
+        select id,
+               login_name,
+               name,
+               password
+        from user
+        where login_name = #{loginName}
+    </select>
 
 
 </mapper>
