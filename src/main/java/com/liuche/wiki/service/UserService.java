@@ -1,5 +1,6 @@
 package com.liuche.wiki.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.liuche.wiki.domain.User;
 import com.liuche.wiki.req.UserLoginQueryReq;
 import com.liuche.wiki.req.UserPwdSaveReq;
@@ -16,5 +17,5 @@ public interface UserService {
     boolean saveUser(UserSaveReq req);
     boolean deleteUser(Long id);
     boolean resetUserPwd(UserPwdSaveReq req);
-    UserLoginQueryResp login(UserLoginQueryReq req);
+    UserLoginQueryResp login(UserLoginQueryReq req) throws JsonProcessingException;
 }

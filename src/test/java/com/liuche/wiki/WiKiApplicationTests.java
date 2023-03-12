@@ -5,21 +5,21 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.util.DigestUtils;
-
-import java.nio.charset.StandardCharsets;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
 class WiKiApplicationTests {
     @Autowired
     private DocService docService;
+//    @Autowired
+    private StringRedisTemplate template;
 
     @Test
     void contextLoads() {
-        String s = DigestUtils.md5DigestAsHex("".getBytes(StandardCharsets.UTF_8));
-        System.out.println(s);
+        Boolean delete = template.delete("user:info:0b3ef860-9933-4970-ae55-a210053af61e");
+        System.out.println(delete);
     }
 
 }

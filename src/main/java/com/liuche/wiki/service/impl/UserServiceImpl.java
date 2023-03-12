@@ -1,5 +1,7 @@
 package com.liuche.wiki.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.liuche.wiki.domain.User;
@@ -17,6 +19,7 @@ import com.liuche.wiki.service.UserService;
 import com.liuche.wiki.utils.CopyUtil;
 import com.liuche.wiki.utils.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -30,6 +33,8 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     @Autowired
     private SnowFlake snowFlake;
+    @Autowired
+    private StringRedisTemplate template; // redis
 
     @Override
     public User queryById(Long id) {
@@ -100,8 +105,9 @@ public class UserServiceImpl implements UserService {
         return res > 0;
     }
 
+    private static final ObjectMapper mapper = new ObjectMapper(); // 序列化和接序列化对象
     @Override
-    public UserLoginQueryResp login(UserLoginQueryReq req) { // 处理用户登录的逻辑
+    public UserLoginQueryResp login(UserLoginQueryReq req) throws JsonProcessingException { // 处理用户登录的逻辑
         // 1. 首先通过用户名查询该用户，看有没有该用户，如果有则返回该用户
         User userDB = userMapper.queryByLoginName(req);
         if (ObjectUtils.isEmpty(userDB)) { // 如果是空对象
@@ -113,7 +119,12 @@ public class UserServiceImpl implements UserService {
             // 1.生成token
             UUID token = UUID.randomUUID();
             resp.setToken(token.toString());
-            // 2.返回user信息
+            // 2.将信息保存到redis中，token为键userDB为值
+              // 手动传化成字符串存到redis
+            String str = mapper.writeValueAsString(userDB);
+              // 保存到redis
+            template.opsForValue().set("user:info:"+ token,str);
+            // 3.返回user信息
             return resp;
 
         }else {
