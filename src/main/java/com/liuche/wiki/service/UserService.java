@@ -1,6 +1,7 @@
 package com.liuche.wiki.service;
 
 import com.liuche.wiki.domain.User;
+import com.liuche.wiki.req.UserPwdSaveReq;
 import com.liuche.wiki.req.UserQueryReq;
 import com.liuche.wiki.req.UserSaveReq;
 import com.liuche.wiki.resp.PageResp;
@@ -12,4 +13,5 @@ public interface UserService {
     PageResp<UserQueryResp> selectAll(UserQueryReq req);
     boolean saveUser(UserSaveReq req);
     boolean deleteUser(Long id);
+    boolean resetUserPwd(UserPwdSaveReq req);
 }

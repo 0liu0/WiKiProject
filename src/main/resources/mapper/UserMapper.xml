@@ -69,6 +69,12 @@
         where login_name = #{loginName}
     </select>
 
+    <update id="resetUserPwd">
+        update user
+        set password = #{password}
+        where id = #{id}
+    </update>
+
 
 </mapper>
 

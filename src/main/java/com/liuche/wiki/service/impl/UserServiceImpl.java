@@ -6,6 +6,7 @@ import com.liuche.wiki.domain.User;
 import com.liuche.wiki.exception.BusinessException;
 import com.liuche.wiki.exception.BusinessExceptionCode;
 import com.liuche.wiki.mapper.UserMapper;
+import com.liuche.wiki.req.UserPwdSaveReq;
 import com.liuche.wiki.req.UserQueryReq;
 import com.liuche.wiki.req.UserSaveReq;
 import com.liuche.wiki.resp.UserQueryResp;
@@ -88,5 +89,11 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public boolean resetUserPwd(UserPwdSaveReq req) {
+        int res = userMapper.resetUserPwd(req);
+        return res > 0;
     }
 }
