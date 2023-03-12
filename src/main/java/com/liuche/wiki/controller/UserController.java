@@ -1,10 +1,12 @@
 package com.liuche.wiki.controller;
 
+import com.liuche.wiki.req.UserLoginQueryReq;
 import com.liuche.wiki.req.UserPwdSaveReq;
 import com.liuche.wiki.req.UserQueryReq;
 import com.liuche.wiki.req.UserSaveReq;
 import com.liuche.wiki.resp.CommonResp;
 import com.liuche.wiki.resp.PageResp;
+import com.liuche.wiki.resp.UserLoginQueryResp;
 import com.liuche.wiki.resp.UserQueryResp;
 import com.liuche.wiki.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +60,16 @@ public class UserController {
             resp.setSuccess(false);
             resp.setMessage("网络繁忙！");
         }
+        return resp;
+    }
+
+    @PostMapping("/login")
+    public CommonResp login(@Valid @RequestBody UserLoginQueryReq req) {
+        req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes(StandardCharsets.UTF_8)));
+        CommonResp<Object> resp = new CommonResp<>();
+        UserLoginQueryResp queryResp = userService.login(req);
+        resp.setMessage("登陆成功！");
+        resp.setContent(queryResp);
         return resp;
     }
 }

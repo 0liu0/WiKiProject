@@ -6,11 +6,13 @@ import com.liuche.wiki.domain.User;
 import com.liuche.wiki.exception.BusinessException;
 import com.liuche.wiki.exception.BusinessExceptionCode;
 import com.liuche.wiki.mapper.UserMapper;
+import com.liuche.wiki.req.UserLoginQueryReq;
 import com.liuche.wiki.req.UserPwdSaveReq;
 import com.liuche.wiki.req.UserQueryReq;
 import com.liuche.wiki.req.UserSaveReq;
-import com.liuche.wiki.resp.UserQueryResp;
 import com.liuche.wiki.resp.PageResp;
+import com.liuche.wiki.resp.UserLoginQueryResp;
+import com.liuche.wiki.resp.UserQueryResp;
 import com.liuche.wiki.service.UserService;
 import com.liuche.wiki.utils.CopyUtil;
 import com.liuche.wiki.utils.SnowFlake;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -95,5 +98,26 @@ public class UserServiceImpl implements UserService {
     public boolean resetUserPwd(UserPwdSaveReq req) {
         int res = userMapper.resetUserPwd(req);
         return res > 0;
+    }
+
+    @Override
+    public UserLoginQueryResp login(UserLoginQueryReq req) { // 处理用户登录的逻辑
+        // 1. 首先通过用户名查询该用户，看有没有该用户，如果有则返回该用户
+        User userDB = userMapper.queryByLoginName(req);
+        if (ObjectUtils.isEmpty(userDB)) { // 如果是空对象
+            throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+        }
+        // 2.跟前端发来的用户密码进行比对，相同则登录成功不同则抛出business异常返回给前端
+        if (userDB.getPassword().equals(req.getPassword())) {
+            UserLoginQueryResp resp = CopyUtil.copy(userDB, UserLoginQueryResp.class);
+            // 1.生成token
+            UUID token = UUID.randomUUID();
+            resp.setToken(token.toString());
+            // 2.返回user信息
+            return resp;
+
+        }else {
+            throw new BusinessException(BusinessExceptionCode.LOGIN_USER_ERROR);
+        }
     }
 }

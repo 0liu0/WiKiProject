@@ -1,6 +1,7 @@
 package com.liuche.wiki.mapper;
 
 import com.liuche.wiki.domain.User;
+import com.liuche.wiki.req.UserLoginQueryReq;
 import com.liuche.wiki.req.UserPwdSaveReq;
 import com.liuche.wiki.req.UserQueryReq;
 import org.apache.ibatis.annotations.Param;
@@ -23,4 +24,5 @@ public interface UserMapper {
     void saveUser2(User req);
     User selectByLoginName(@Param("loginName") String loginName);
     int resetUserPwd(UserPwdSaveReq req);
+    User queryByLoginName(UserLoginQueryReq req);
 }
