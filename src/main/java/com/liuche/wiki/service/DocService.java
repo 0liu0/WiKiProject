@@ -13,5 +13,6 @@ public interface DocService {
     boolean deleteDoc(Long id);
     String selectOne(Long id);
     PageResp<DocQueryResp> getOne(Long id);
-    int vote(Long id);
+    void vote(Long id);
+    void updateEbookInfo();
 }

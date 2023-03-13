@@ -102,6 +102,22 @@
         where id = #{id}
     </update>
 
+    <update id="docAddViewCount">
+        update doc
+        set view_count=view_count + 1
+        where id = #{id}
+    </update>
+
+    <update id="updateEbookInfo">
+        update ebook b1,(select ebook_id, count(1) `nums`, sum(view_count) `viewCount`, sum(vote_count) `voteCount`
+                         from doc
+                         group by ebook_id) b2
+        set b1.doc_count=b2.nums,
+            b1.vote_count=b2.voteCount,
+            b1.view_count=b2.viewCount
+        where b1.id = b2.ebook_id
+    </update>
+
 
 </mapper>
 

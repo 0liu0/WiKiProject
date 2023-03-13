@@ -5,6 +5,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.liuche.wiki.domain.Content;
 import com.liuche.wiki.domain.Doc;
+import com.liuche.wiki.exception.BusinessException;
+import com.liuche.wiki.exception.BusinessExceptionCode;
 import com.liuche.wiki.mapper.ContentMapper;
 import com.liuche.wiki.mapper.DocMapper;
 import com.liuche.wiki.req.DocQueryReq;
@@ -13,7 +15,11 @@ import com.liuche.wiki.resp.DocQueryResp;
 import com.liuche.wiki.resp.PageResp;
 import com.liuche.wiki.service.DocService;
 import com.liuche.wiki.utils.CopyUtil;
+import com.liuche.wiki.utils.RedisUtil;
+import com.liuche.wiki.utils.RequestContext;
 import com.liuche.wiki.utils.SnowFlake;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -22,12 +28,15 @@ import java.util.List;
 
 @Service
 public class DocServiceImpl implements DocService {
+    private static final Logger LOG = LoggerFactory.getLogger(DocServiceImpl.class);
     @Autowired
     private DocMapper docMapper;
     @Autowired
     private ContentMapper contentMapper;
     @Autowired
     private SnowFlake snowFlake;
+    @Autowired
+    private RedisUtil redisUtil;
 
     @Override
     public Doc queryById(Long id) {
@@ -63,6 +72,9 @@ public class DocServiceImpl implements DocService {
                 docMapper.saveDoc(doc);
             } else { // 执行新增的逻辑
                 doc.setId(snowFlake.nextId());
+                // 设置点赞和查看量的初始值
+                doc.setVoteCount(0);
+                doc.setViewCount(0);
                 if (!ObjectUtils.isEmpty(content.getContent())) {// 如果内容部分有内容我再保存，没有不保存
                     content.setId(doc.getId());
                     contentMapper.insertContent(content);
@@ -89,6 +101,12 @@ public class DocServiceImpl implements DocService {
     @Override
     public String selectOne(Long id) {
         Content content = contentMapper.selectOne(id);
+        // 这里添加一个增加访问量的方法
+        if (!ObjectUtils.isEmpty(content.getContent())) {
+            // 将content对应的doc访问量加一
+            docMapper.docAddViewCount(id);
+            LOG.info("访问量数+1");
+        }
         return content.getContent();
     }
 
@@ -105,8 +123,20 @@ public class DocServiceImpl implements DocService {
     }
 
     @Override
-    public int vote(Long id) {
-        return docMapper.vote(id);
+    public void vote(Long id) {
+        // 远程ip作为key值，24小时内不能重复
+        String key = RequestContext.getRemoteAddr();
+        boolean flag = redisUtil.validateRepeat("user:vote:ip:" + key+"-doc:"+id, 3600 * 24);
+        if (flag) {
+            docMapper.vote(id);
+        }else {
+            throw  new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
+        }
+    }
+
+    @Override
+    public void updateEbookInfo() {
+        docMapper.updateEbookInfo();
     }
 
 }
