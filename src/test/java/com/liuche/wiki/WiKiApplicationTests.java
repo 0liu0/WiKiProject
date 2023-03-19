@@ -18,8 +18,8 @@ class WiKiApplicationTests {
 
     @Test
     void contextLoads() {
-        Boolean delete = template.delete("user:info:0b3ef860-9933-4970-ae55-a210053af61e");
-        System.out.println(delete);
+//        Boolean delete = template.delete("user:info:0b3ef860-9933-4970-ae55-a210053af61e");
+//        System.out.println(delete);
     }
 
 }

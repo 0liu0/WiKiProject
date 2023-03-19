@@ -18,6 +18,7 @@ import com.liuche.wiki.utils.CopyUtil;
 import com.liuche.wiki.utils.RedisUtil;
 import com.liuche.wiki.utils.RequestContext;
 import com.liuche.wiki.utils.SnowFlake;
+import com.liuche.wiki.websocket.WebSocketServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,8 @@ public class DocServiceImpl implements DocService {
     private SnowFlake snowFlake;
     @Autowired
     private RedisUtil redisUtil;
+    @Autowired
+    private WebSocketServer webSocketServer;
 
     @Override
     public Doc queryById(Long id) {
@@ -129,6 +132,10 @@ public class DocServiceImpl implements DocService {
         boolean flag = redisUtil.validateRepeat("user:vote:ip:" + key+"-doc:"+id, 3600 * 24);
         if (flag) {
             docMapper.vote(id);
+            // 得到点赞文档的名称
+            Doc doc = docMapper.queryById(id);
+            String msg = "【"+ doc.getName() + "】被点赞！"; // 发送的消息
+            webSocketServer.sendInfo(msg); // 交给websocket发送
         }else {
             throw  new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
         }

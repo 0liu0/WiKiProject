@@ -63,7 +63,7 @@
         <dependency>
             <groupId>com.alibaba</groupId> <!--这个不过是在aop里打印日志过程中所需要用到的依赖-->
             <artifactId>fastjson</artifactId>
-            <version>1.2.70</version>
+            <version>1.2.83</version>
         </dependency>
         <!--pagehelper 插件-->
         <dependency>
@@ -80,6 +80,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <!--websocket的依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
     </dependencies>
 
