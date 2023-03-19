@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
@@ -40,6 +41,9 @@ public class DocServiceImpl implements DocService {
     private RedisUtil redisUtil;
     @Autowired
     private WebSocketServer webSocketServer;
+
+    @Autowired
+    private WsServer wsServer;
 
     @Override
     public Doc queryById(Long id) {
@@ -61,6 +65,7 @@ public class DocServiceImpl implements DocService {
     }
 
     @Override
+    @Transactional // 实现事务
     public boolean saveDoc(DocSaveReq req) {
         try {
             Doc doc = CopyUtil.copy(req, Doc.class);
@@ -134,8 +139,7 @@ public class DocServiceImpl implements DocService {
             docMapper.vote(id);
             // 得到点赞文档的名称
             Doc doc = docMapper.queryById(id);
-            String msg = "【"+ doc.getName() + "】被点赞！"; // 发送的消息
-            webSocketServer.sendInfo(msg); // 交给websocket发送
+            wsServer.sendInfo("【"+ doc.getName() + "】被点赞！"); // 发送消息
         }else {
             throw  new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
         }

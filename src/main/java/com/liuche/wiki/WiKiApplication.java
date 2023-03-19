@@ -6,11 +6,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @MapperScan("com.liuche.wiki.mapper")
 @SpringBootApplication
 @EnableScheduling // 启用定时任务
+@EnableAsync // 启用springboot的异步化
 public class WiKiApplication {
     private static final Logger LOG = LoggerFactory.getLogger(WiKiApplication.class);
     public static void main(String[] args) {
