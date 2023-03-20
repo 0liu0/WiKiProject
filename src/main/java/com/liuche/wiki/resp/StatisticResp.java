@@ -9,13 +9,13 @@ public class StatisticResp {
     @JsonFormat(pattern="MM-dd", timezone = "GMT+8")
     private Date date;
 
-    private int viewCount;
+    private Integer viewCount;
 
-    private int voteCount;
+    private Integer voteCount;
 
-    private int viewIncrease;
+    private Integer viewIncrease;
 
-    private int voteIncrease;
+    private Integer voteIncrease;
 
     public Date getDate() {
         return date;
@@ -25,35 +25,35 @@ public class StatisticResp {
         this.date = date;
     }
 
-    public int getViewCount() {
+    public Integer getViewCount() {
         return viewCount;
     }
 
-    public void setViewCount(int viewCount) {
+    public void setViewCount(Integer viewCount) {
         this.viewCount = viewCount;
     }
 
-    public int getVoteCount() {
+    public Integer getVoteCount() {
         return voteCount;
     }
 
-    public void setVoteCount(int voteCount) {
+    public void setVoteCount(Integer voteCount) {
         this.voteCount = voteCount;
     }
 
-    public int getViewIncrease() {
+    public Integer getViewIncrease() {
         return viewIncrease;
     }
 
-    public void setViewIncrease(int viewIncrease) {
+    public void setViewIncrease(Integer viewIncrease) {
         this.viewIncrease = viewIncrease;
     }
 
-    public int getVoteIncrease() {
+    public Integer getVoteIncrease() {
         return voteIncrease;
     }
 
-    public void setVoteIncrease(int voteIncrease) {
+    public void setVoteIncrease(Integer voteIncrease) {
         this.voteIncrease = voteIncrease;
     }
 

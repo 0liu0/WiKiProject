@@ -97,5 +97,17 @@ public class EbookSnapshot implements Serializable {
         this.voteIncrease = voteIncrease;
     }
 
+    @Override
+    public String toString() {
+        return "EbookSnapshot{" +
+                "id=" + id +
+                ", ebookId=" + ebookId +
+                ", date=" + date +
+                ", viewCount=" + viewCount +
+                ", voteCount=" + voteCount +
+                ", viewIncrease=" + viewIncrease +
+                ", voteIncrease=" + voteIncrease +
+                '}';
+    }
 }
 

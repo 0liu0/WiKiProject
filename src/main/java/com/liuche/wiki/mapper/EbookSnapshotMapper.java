@@ -10,6 +10,5 @@ public interface EbookSnapshotMapper {
     EbookSnapshot queryById(@Param("id") Long id);
     void genEbookSnapshot();
     List<StatisticResp> getStatistic();
-
     List<StatisticResp> get30Statistic();
 }

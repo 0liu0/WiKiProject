@@ -28,7 +28,10 @@ public class SpringMvcConfig implements WebMvcConfigurer { // 增加拦截器
                         "/doc/get-content/**",
                         "/ebook-snapshot/**",
                         "/category/list",
-                        "/ebook/update"
+                        "/ebook/update",
+                        "ebook-snapshot/get-statistic",
+                        "ebook-snapshot/get-30-statistic",
+                        "/favicon.ico"
                 );
 
     }
