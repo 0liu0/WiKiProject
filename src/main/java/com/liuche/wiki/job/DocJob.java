@@ -21,6 +21,6 @@ public class DocJob {
         LOG.info("开始更新ebook的数据");
         long start = System.currentTimeMillis();
         docService.updateEbookInfo();
-        LOG.info("更新ebook的数据完成，耗时:{}秒",(System.currentTimeMillis()-start)/1000);
+        LOG.info("更新ebook的数据完成，耗时:{}毫秒",(System.currentTimeMillis()-start));
     }
 }
