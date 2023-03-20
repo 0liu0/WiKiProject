@@ -30,7 +30,7 @@ public class EbookSnapshotJob {
         // 增加日志流水号
         MDC.put("LOG_ID", String.valueOf(snowFlake.nextId()));
         LOG.info("生成今日电子书快照开始");
-        Long start = System.currentTimeMillis();
+        long start = System.currentTimeMillis();
         ebookSnapshotServer.genEbookSnapshot();
         LOG.info("生成今日电子书快照结束，耗时：{}毫秒", System.currentTimeMillis() - start);
     }
